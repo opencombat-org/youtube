@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YouTube Downloader</title>
+    <style>body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, sans-serif; max-width: 840px; margin: 2rem auto; padding: 0 1rem; }header { margin-bottom: 1rem; }form { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem; }input[type=text]{ flex: 1 1 520px; padding: .6rem .7rem; }button{ padding: .6rem .9rem; cursor: pointer; }table{ width: 100%; border-collapse: collapse; }th, td{ text-align: left; padding: .5rem; border-bottom: 1px solid #eee; }.muted{ color: #666; }</style>
+  </head>
+  <body>
+    <header>
+      <h1>Descargador YouTube (yt-dlp)</h1>
+      <p class="muted">Pega una URL y descarga. Tus archivos aparecerán listados abajo; puedes borrarlos cuando quieras.</p>
+    </header>
+    <section>
+      <form action="/download" method="post">
+        <input type="text" name="url" placeholder="https://www.youtube.com/watch?v=..." required />
+        <label><input type="checkbox" name="solo_audio" /> Solo audio (MP3)</label>
+        <button type="submit">Descargar</button>
+      </form>
+    </section>
+    <section>
+      <h2>Archivos</h2>
+      {% if files %}
+      <table>
+        <thead><tr><th>Nombre</th><th>Acciones</th></tr></thead>
+        <tbody>
+          {% for f in files %}
+          <tr><td>{{ f }}</td><td><a href="/files/{{ f }}">Descargar</a><form action="/delete" method="post" style="display:inline" onsubmit="return confirm('¿Borrar {{ f }}?');"><input type="hidden" name="name" value="{{ f }}"><button type="submit">Borrar</button></form></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <p class="muted">No hay archivos todavía.</p>
+      {% endif %}
+    </section>
+  </body>
+</html>
